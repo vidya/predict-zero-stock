@@ -21,10 +21,6 @@ def amount_needed(schedule_list, usage_day)
   schedule_list.map { |sch| sch.amount_needed(usage_day) }.reduce(:+)
 end
 
-def select_valid_schedules(schedule_list)
-  schedule_list.select &:is_valid?
-end
-
 def to_scheduled_use_objects(hash_list)
   hash_list.map { |hash| InventoryUse.new hash.merge!(:properties => hash) }
 end
@@ -45,18 +41,17 @@ end
 # scheduled_uses: an array of hashes
 #
 def reorder_time_forecast(scheduled_uses, amount_remaining)
-  schedule_list = to_scheduled_use_objects scheduled_uses
+  schedule_list = to_scheduled_use_objects(scheduled_uses)
 
-  if schedule_list.is_a? Array
-    valid_obj_list = schedule_list.all? { |sch| sch.is_a? InventoryUse}
+  raise "ERROR: schedule_list needs to be an Array of InventoryUse objects" \
+    if !(schedule_list.is_a? Array)
 
-    raise "ERROR: schedule_list needs to be an Array of InventoryUse objects" unless valid_obj_list
+  valid_obj_list = schedule_list.all? { |sch| sch.is_a? InventoryUse}
 
-  else
-    raise "ERROR: schedule_list needs to be an Array of InventoryUse objects"
-  end
+  raise "ERROR: schedule_list needs to be an Array of InventoryUse objects" \
+    unless valid_obj_list
 
-  valid_schedules          = select_valid_schedules(schedule_list)
+  valid_schedules = schedule_list.select(&:is_valid?)
 
   return nil if valid_schedules.empty?
 
@@ -64,22 +59,21 @@ def reorder_time_forecast(scheduled_uses, amount_remaining)
 
   last_valid_usage_day     = nil
 
-  last_planned_usage_day   = last_scheduled_usage_day schedule_list
+  last_planned_usage_day   = last_scheduled_usage_day(schedule_list)
 
-  #usage_day                = Date.today - 1
-  usage_day                = Date.yesterday
+  usage_day                = Date.today - 1
   while true
     usage_day             += 1
 
-    unless has_unending_schedules?(schedule_list) || last_planned_usage_day.nil?
-      break if usage_day > last_planned_usage_day
+    unless has_unending_schedules?(schedule_list) || last_planned_usage_day
+      break if (usage_day > last_planned_usage_day)
     end
 
     amount_needed          = amount_needed valid_schedules, usage_day
 
-    next if amount_needed.eql? 0
+    next if amount_needed.zero?
 
-    break if amount_needed > amount_available
+    break if (amount_needed > amount_available)
 
     last_valid_usage_day   = usage_day
 
