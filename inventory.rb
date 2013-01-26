@@ -22,7 +22,7 @@ def amount_needed(schedule_list, usage_day)
 end
 
 def to_scheduled_use_objects(hash_list)
-  hash_list.map { |hash| InventoryUse.new hash.merge!(:properties => hash) }
+  hash_list.map { |hash| InventoryUse.new(hash) }
 end
 
 def last_scheduled_usage_day(scheduled_use_objects)
