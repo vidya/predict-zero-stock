@@ -46,8 +46,6 @@ def reorder_time_forecast(scheduled_uses, amount_remaining)
   raise "ERROR: schedule_list needs to be an Array of InventoryUse objects" \
     if !(schedule_list.is_a? Array)
 
-  #valid_obj_list = schedule_list.all? { |sch| sch.is_a? InventoryUse}
-
   raise "ERROR: schedule_list needs to be an Array of InventoryUse objects" \
     unless schedule_list.all? { |sch| sch.is_a? InventoryUse}
 
@@ -65,9 +63,9 @@ def reorder_time_forecast(scheduled_uses, amount_remaining)
   while true
     usage_day             += 1
 
-    unless has_unending_schedules?(schedule_list) || last_planned_usage_day
-      break if (usage_day > last_planned_usage_day)
-    end
+    break if (usage_day > last_planned_usage_day)   \
+      unless has_unending_schedules?(schedule_list) \
+        || last_planned_usage_day.nil?
 
     amount_needed          = amount_needed(valid_schedules, usage_day)
 
