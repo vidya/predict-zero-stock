@@ -3,7 +3,7 @@ require './inventory_base'
 
 class InventoryUse
   attr_accessor :properties,
-                :amount, :start_date, :end_date, :periodicity, :day_of_the_week
+                :amount, :start_date, :end_date, :periodicity, :wday
 
   def initialize(properties)
     @properties        = properties
@@ -12,7 +12,7 @@ class InventoryUse
     @start_date        = properties[:start_date]
     @end_date          = properties[:end_date]
     @periodicity       = properties[:periodicity]
-    @day_of_the_week   = properties[:day_of_the_week]
+    @wday              = properties[:wday]
   end
 
   def is_valid?
@@ -20,31 +20,27 @@ class InventoryUse
 
     return false if (end_date) && (end_date < start_date)
 
-    #return false unless ['daily', 'weekly'].include? periodicity
-    return false unless (periodicity.eql?('daily') || periodicity.eql?('weekly'))
+    return false unless periodicity.eql?('daily') || periodicity.eql?('weekly')
 
     return false if (amount <= 0)
 
-    if periodicity.eql? 'weekly'
-      return false unless day_of_the_week
-
-      return false unless WEEK_DAYS.include? day_of_the_week.downcase
-    end
+    return false unless periodicity.eql?('weekly') \
+      && wday && WEEK_DAYS.include?(wday.downcase)
 
     true
   end
 
-  def amount_needed(usage_day)
-    required_amount = if (usage_day < start_date)
+  def amount_needed(usage_date)
+    required_amount = if (usage_date < start_date)
                         0
                       else
                         amount
                       end
 
-    required_amount = 0 if (end_date) && (usage_day > end_date)
+    required_amount = 0 if (end_date) && (usage_date > end_date)
 
-    if periodicity.eql? 'weekly'
-      required_amount = 0 unless usage_day.wday.eql?(WEEK_DAYS.index day_of_the_week.downcase)
+    if periodicity.eql?('weekly')
+      required_amount = 0 unless usage_date.wday.eql?(WEEK_DAYS.index wday.downcase)
     end
 
     required_amount

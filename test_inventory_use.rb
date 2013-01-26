@@ -57,7 +57,7 @@ describe "InventoryUse" do
                                           :start_date       => DAY_ONE - 23,
                                           :end_date         => DAY_ONE - 24,
 
-                                          :day_of_the_week  => WEEK_DAYS[(DAY_ONE - 24).wday]
+                                          :wday  => WEEK_DAYS[(DAY_ONE - 24).wday]
                                         )
 
       error_message   = "ERROR: weekly_periodicity in schedule(=#{schedule.properties.inspect}) is invalid"
@@ -71,7 +71,7 @@ describe "InventoryUse" do
                                           :amount           => AMOUNT_UNIT,
                                           :periodicity      => 'weekly',
                                           :start_date       => DAY_ONE - 23,
-                                          :day_of_the_week  => WEEK_DAYS[WEEK_DAY_BASE + 1]
+                                          :wday  => WEEK_DAYS[WEEK_DAY_BASE + 1]
                                         )
 
       error_message   = "ERROR: weekly_periodicity in schedule(=#{schedule.properties.inspect}) is invalid"
@@ -86,7 +86,7 @@ describe "InventoryUse" do
                                           :start_date       => DAY_ONE - 23,
                                           :end_date         => DAY_ONE - 3,
 
-                                          :day_of_the_week  => WEEK_DAYS[WEEK_DAY_BASE + 1]
+                                          :wday  => WEEK_DAYS[WEEK_DAY_BASE + 1]
                                         )
 
       error_message   = "ERROR: weekly_periodicity in schedule(=#{schedule.properties.inspect}) is invalid"
@@ -149,7 +149,7 @@ describe "InventoryUse" do
                                               :end_date         => DAY_ONE - 2, 
 
 
-                                              :day_of_the_week  => WEEK_DAYS[DAY_ONE.wday]
+                                              :wday  => WEEK_DAYS[DAY_ONE.wday]
                                             )
     end
 
@@ -180,7 +180,7 @@ describe "InventoryUse" do
 
                                                         :start_date       => DAY_ONE - 23,
 
-                                                        :day_of_the_week  => WEEK_DAYS[(DAY_ONE - 23).wday]
+                                                        :wday  => WEEK_DAYS[(DAY_ONE - 23).wday]
                                                       )
     end
 

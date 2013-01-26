@@ -194,7 +194,7 @@ describe "ChemicalInventory" do
 
                               :start_date       => DAY_ONE - 7,
 
-                              :day_of_the_week  => WEEK_DAYS[WEEK_DAY_BASE + 1]
+                              :wday  => WEEK_DAYS[WEEK_DAY_BASE + 1]
                             }
                           ]
       end
