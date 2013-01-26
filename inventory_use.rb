@@ -39,9 +39,8 @@ class InventoryUse
 
     required_amount = 0 if (end_date) && (usage_date > end_date)
 
-    if periodicity.eql?('weekly')
-      required_amount = 0 unless usage_date.wday.eql?(WEEK_DAYS.index wday.downcase)
-    end
+    required_amount = 0 if periodicity.eql?('weekly')         \
+      && !usage_date.wday.eql?(WEEK_DAYS.index wday.downcase)
 
     required_amount
   end
