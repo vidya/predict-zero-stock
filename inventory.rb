@@ -68,7 +68,7 @@ def reorder_time_forecast(scheduled_uses, amount_remaining)
       unless has_unending_schedules?(schedule_list) \
         || last_planned_usage_day.nil?
 
-    required_amount          = amount_needed(valid_schedules, usage_day)
+    required_amount        = amount_needed(valid_schedules, usage_day)
 
     next if required_amount.zero?
 
