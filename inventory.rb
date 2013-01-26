@@ -66,7 +66,8 @@ def reorder_time_forecast(scheduled_uses, amount_remaining)
 
   last_planned_usage_day   = last_scheduled_usage_day schedule_list
 
-  usage_day                = Date.today - 1
+  #usage_day                = Date.today - 1
+  usage_day                = Date.yesterday
   while true
     usage_day             += 1
 
@@ -75,6 +76,7 @@ def reorder_time_forecast(scheduled_uses, amount_remaining)
     end
 
     amount_needed          = amount_needed valid_schedules, usage_day
+
     next if amount_needed.eql? 0
 
     break if amount_needed > amount_available
