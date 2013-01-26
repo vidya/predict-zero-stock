@@ -60,22 +60,23 @@ def reorder_time_forecast(scheduled_uses, amount_remaining)
   last_planned_usage_day   = last_scheduled_usage_day(schedule_list)
 
   usage_day                = Date.today - 1
-  while true
+
+  loop do
     usage_day             += 1
 
     break if (usage_day > last_planned_usage_day)   \
       unless has_unending_schedules?(schedule_list) \
         || last_planned_usage_day.nil?
 
-    amount_needed          = amount_needed(valid_schedules, usage_day)
+    required_amount          = amount_needed(valid_schedules, usage_day)
 
-    next if amount_needed.zero?
+    next if required_amount.zero?
 
-    break if (amount_needed > amount_available)
+    break if (required_amount > amount_available)
 
     last_valid_usage_day   = usage_day
 
-    amount_available      -= amount_needed
+    amount_available      -= required_amount
   end
 
   last_valid_usage_day
