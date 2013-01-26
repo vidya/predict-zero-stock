@@ -6,4 +6,4 @@ require 'pry-nav'
 
 require 'date'
 
-WEEK_DAYS = %w( sunday monday tuesday wednesday thursday friday saturday )
+WEEK_DAYS = %w(sunday monday tuesday wednesday thursday friday saturday)

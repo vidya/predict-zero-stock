@@ -30,17 +30,15 @@ def to_scheduled_use_objects(hash_list)
 end
 
 def last_scheduled_usage_day(scheduled_use_objects)
-  objects_with_end_dates = scheduled_use_objects.select { |sch| not sch.end_date.nil? }
+  objects_with_end_dates = scheduled_use_objects.map(&:end_date).compact
 
   return nil if objects_with_end_dates.empty?
 
-  end_dates = objects_with_end_dates.map { |obj| obj.end_date }
-
-  end_dates.max
+  objects_with_end_dates.map(&:end_date).max
 end
 
 def has_unending_schedules?(scheduled_use_objects)
-  scheduled_use_objects.any? { |sch| sch.end_date.nil? }
+  scheduled_use_objects.detect &:end_date
 end
 
 #
