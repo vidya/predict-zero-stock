@@ -18,11 +18,11 @@
 require 'inventory_base'
 
 def amount_needed(schedule_list, usage_day)
-  schedule_list.inject(0) { |total, sch| total += sch.amount_needed usage_day }
+  schedule_list.map { |sch| sch.amount_needed(usage_day) }.reduce(:+)
 end
 
 def select_valid_schedules(schedule_list)
-  schedule_list.select { |sch| sch.is_valid? }
+  schedule_list.select &:is_valid?
 end
 
 def to_scheduled_use_objects(hash_list)
