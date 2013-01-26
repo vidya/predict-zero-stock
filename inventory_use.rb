@@ -20,9 +20,10 @@ class InventoryUse
 
     return false if (end_date) && (end_date < start_date)
 
-    return false unless ['daily', 'weekly'].include? periodicity
+    #return false unless ['daily', 'weekly'].include? periodicity
+    return false unless (periodicity.eql?('daily') || periodicity.eql?('weekly'))
 
-    return false if amount <= 0
+    return false if (amount <= 0)
 
     if periodicity.eql? 'weekly'
       return false unless day_of_the_week
